@@ -109,6 +109,42 @@ card has moved.
 | `npm run preview` | Preview a production build locally. |
 | `npm test` | Run the leave engine suite. |
 
+## Full implementation (self-host)
+
+There are two ways to run this desk, and they stack.
+
+**The frontend, one click.** The Vercel / DigitalOcean buttons above deploy the
+people desk on its own, running on the bundled demo data. No database, no
+dashboard — a fully static preview of both personas.
+
+**The whole stack, one command.**
+[`docker-compose.yml`](docker-compose.yml) stands up Postgres (seeded with the
+*same* twenty-four people, the same four leave types, the same six requests and
+the same two onboarding boards), an auto-generated Adminium dashboard that runs
+that real database, and the desk itself:
+
+```bash
+cp .env.example .env      # then set ADMINIUM_SECRET — e.g. openssl rand -hex 32
+docker compose up
+```
+
+- **People desk** → http://localhost:8080
+- **Adminium dashboard** → http://localhost:4600
+
+On first boot, `hr-db` applies [`db/schema.sql`](db/schema.sql) then
+[`db/seed.sql`](db/seed.sql), and Adminium imports the Foundry database as its
+first source connection, introspects the schema, and generates the back office.
+Finish the ~1-minute first-run wizard at `:4600` — it's pre-pointed at the
+seeded DB. The install spec Adminium reads to configure itself is
+[`manifest.json`](manifest.json); it scaffolds **8 tables, 6 dashboard pages, 2
+access presets** (`hr-manager`, `employee`) **and 4 settings** into your
+connected database.
+
+The seeded database is the *same company* the app shows, down to the pinned
+clock: Elif is out sick on 28 July in both places, Tom's twelve-day request sits
+mid-chain in both, and request ids are the codes — row 303 is LR-303, so the
+next one raised is LR-305.
+
 ## The split: the desk and the back office
 
 | In this app | In the generated dashboard |

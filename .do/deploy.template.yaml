@@ -1,0 +1,11 @@
+spec:
+  name: people-ops
+  static_sites:
+    - name: web
+      github:
+        repo: Adminiumjs/people-ops
+        branch: main
+        deploy_on_push: true
+      build_command: npm run build
+      output_dir: dist
+      environment_slug: node-js
