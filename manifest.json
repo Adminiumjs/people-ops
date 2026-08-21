@@ -13,509 +13,390 @@
     "key": "mft.hr.desc",
     "fallback": "A people desk with leave balances, approvals that route themselves, a team calendar and onboarding checklists — backed by your own database."
   },
-  "categories": ["internal-tools"],
-
+  "categories": [
+    "internal-tools"
+  ],
   "compatibility": {
     "minAdminiumVersion": "1.0.0",
-    "engines": ["postgres", "mysql", "sqlite"],
+    "engines": [
+      "postgres",
+      "mysql",
+      "sqlite"
+    ],
     "requires": []
   },
-
   "requiredSchema": {
     "tables": [
       {
         "ref": "departments",
-        "table": "departments",
-        "label": { "key": "mft.hr.tbl.departments", "fallback": "Departments" },
-        "primaryKey": ["id"],
         "columns": [
-          { "name": "id", "type": "int", "role": "pk" },
-          { "name": "name", "type": "text", "required": true, "unique": true, "display": "title" }
+          {
+            "ref": "id",
+            "type": "int",
+            "role": "pk"
+          },
+          {
+            "ref": "name",
+            "type": "text"
+          }
         ]
       },
       {
         "ref": "positions",
-        "table": "positions",
-        "label": { "key": "mft.hr.tbl.positions", "fallback": "Positions" },
-        "primaryKey": ["id"],
         "columns": [
-          { "name": "id", "type": "int", "role": "pk" },
-          { "name": "department_id", "type": "fk", "references": "departments", "required": true },
-          { "name": "title", "type": "text", "required": true, "display": "title" }
+          {
+            "ref": "id",
+            "type": "int",
+            "role": "pk"
+          },
+          {
+            "ref": "department_id",
+            "type": "fk",
+            "references": "departments"
+          },
+          {
+            "ref": "title",
+            "type": "text"
+          }
         ]
       },
       {
         "ref": "employees",
-        "table": "employees",
-        "label": { "key": "mft.hr.tbl.employees", "fallback": "People" },
-        "primaryKey": ["id"],
         "columns": [
-          { "name": "id", "type": "int", "role": "pk" },
-          { "name": "name", "type": "text", "required": true, "display": "title" },
-          { "name": "email", "type": "email", "required": true, "unique": true },
-          { "name": "initials", "type": "text", "required": true },
-          { "name": "avatar", "type": "image" },
-          { "name": "tint", "type": "text", "required": true },
-          { "name": "position_id", "type": "fk", "references": "positions", "required": true },
-          { "name": "manager_id", "type": "fk", "references": "employees" },
           {
-            "name": "buddy_id",
+            "ref": "id",
+            "type": "int",
+            "role": "pk"
+          },
+          {
+            "ref": "name",
+            "type": "text"
+          },
+          {
+            "ref": "email",
+            "type": "text",
+            "semantic": "email"
+          },
+          {
+            "ref": "initials",
+            "type": "text"
+          },
+          {
+            "ref": "avatar",
+            "type": "text",
+            "semantic": "image"
+          },
+          {
+            "ref": "tint",
+            "type": "text"
+          },
+          {
+            "ref": "position_id",
             "type": "fk",
-            "references": "employees",
-            "label": { "key": "mft.hr.col.buddy", "fallback": "Onboarding buddy" }
+            "references": "positions"
           },
-          { "name": "started_on", "type": "date", "required": true },
           {
-            "name": "status",
-            "type": "enum",
-            "required": true,
-            "values": ["active", "on_leave", "left"],
-            "default": "active"
+            "ref": "manager_id",
+            "type": "fk",
+            "references": "employees"
           },
-          { "name": "city", "type": "text", "required": true }
+          {
+            "ref": "buddy_id",
+            "type": "fk",
+            "references": "employees"
+          },
+          {
+            "ref": "started_on",
+            "type": "date"
+          },
+          {
+            "ref": "status",
+            "type": "enum",
+            "enum": [
+              "active",
+              "on_leave",
+              "left"
+            ]
+          },
+          {
+            "ref": "city",
+            "type": "text"
+          }
         ]
       },
       {
         "ref": "leave_types",
-        "table": "leave_types",
-        "label": { "key": "mft.hr.tbl.leave_types", "fallback": "Leave types" },
-        "primaryKey": ["id"],
         "columns": [
-          { "name": "id", "type": "int", "role": "pk" },
-          { "name": "name", "type": "text", "required": true, "display": "title" },
-          { "name": "short_name", "type": "text", "required": true },
-          { "name": "annual_days", "type": "decimal", "required": true },
           {
-            "name": "accrual",
-            "type": "enum",
-            "required": true,
-            "values": ["upfront", "monthly"],
-            "default": "upfront"
+            "ref": "id",
+            "type": "int",
+            "role": "pk"
           },
-          { "name": "per_month", "type": "decimal" },
-          { "name": "color", "type": "text", "required": true }
+          {
+            "ref": "name",
+            "type": "text"
+          },
+          {
+            "ref": "short_name",
+            "type": "text"
+          },
+          {
+            "ref": "annual_days",
+            "type": "decimal"
+          },
+          {
+            "ref": "accrual",
+            "type": "enum",
+            "enum": [
+              "upfront",
+              "monthly"
+            ]
+          },
+          {
+            "ref": "per_month",
+            "type": "decimal"
+          },
+          {
+            "ref": "color",
+            "type": "text"
+          }
         ]
       },
       {
         "ref": "leave_requests",
-        "table": "leave_requests",
-        "label": { "key": "mft.hr.tbl.leave_requests", "fallback": "Leave requests" },
-        "primaryKey": ["id"],
         "columns": [
-          { "name": "id", "type": "int", "role": "pk" },
-          { "name": "employee_id", "type": "fk", "references": "employees", "required": true },
-          { "name": "type_id", "type": "fk", "references": "leave_types", "required": true },
-          { "name": "starts_on", "type": "date", "required": true },
-          { "name": "ends_on", "type": "date", "required": true },
-          { "name": "working_days", "type": "int", "required": true },
           {
-            "name": "status",
-            "type": "enum",
-            "required": true,
-            "values": ["pending", "manager_approved", "approved", "rejected", "cancelled"],
-            "default": "pending"
+            "ref": "id",
+            "type": "int",
+            "role": "pk"
           },
-          { "name": "decided_by", "type": "fk", "references": "employees" },
-          { "name": "decided_at", "type": "timestamp" },
-          { "name": "note", "type": "text" },
-          { "name": "decision_note", "type": "text" },
-          { "name": "created_at", "type": "timestamp", "default": "now", "role": "created" }
+          {
+            "ref": "employee_id",
+            "type": "fk",
+            "references": "employees"
+          },
+          {
+            "ref": "type_id",
+            "type": "fk",
+            "references": "leave_types"
+          },
+          {
+            "ref": "starts_on",
+            "type": "date"
+          },
+          {
+            "ref": "ends_on",
+            "type": "date"
+          },
+          {
+            "ref": "working_days",
+            "type": "int"
+          },
+          {
+            "ref": "status",
+            "type": "enum",
+            "enum": [
+              "pending",
+              "manager_approved",
+              "approved",
+              "rejected",
+              "cancelled"
+            ]
+          },
+          {
+            "ref": "decided_by",
+            "type": "fk",
+            "references": "employees"
+          },
+          {
+            "ref": "decided_at",
+            "type": "timestamptz"
+          },
+          {
+            "ref": "note",
+            "type": "text"
+          },
+          {
+            "ref": "decision_note",
+            "type": "text"
+          },
+          {
+            "ref": "created_at",
+            "type": "timestamptz"
+          }
         ]
       },
       {
         "ref": "holidays",
-        "table": "holidays",
-        "label": { "key": "mft.hr.tbl.holidays", "fallback": "Public holidays" },
-        "primaryKey": ["id"],
         "columns": [
-          { "name": "id", "type": "int", "role": "pk" },
-          { "name": "name", "type": "text", "required": true, "display": "title" },
-          { "name": "on_date", "type": "date", "required": true, "unique": true }
+          {
+            "ref": "id",
+            "type": "int",
+            "role": "pk"
+          },
+          {
+            "ref": "name",
+            "type": "text"
+          },
+          {
+            "ref": "on_date",
+            "type": "date"
+          }
         ]
       },
       {
         "ref": "onboarding_templates",
-        "table": "onboarding_templates",
-        "label": { "key": "mft.hr.tbl.onboarding_templates", "fallback": "Onboarding templates" },
-        "primaryKey": ["id"],
         "columns": [
-          { "name": "id", "type": "int", "role": "pk" },
-          { "name": "name", "type": "text", "required": true, "unique": true, "display": "title" }
+          {
+            "ref": "id",
+            "type": "int",
+            "role": "pk"
+          },
+          {
+            "ref": "name",
+            "type": "text"
+          }
         ]
       },
       {
         "ref": "onboarding_tasks",
-        "table": "onboarding_tasks",
-        "label": { "key": "mft.hr.tbl.onboarding_tasks", "fallback": "Onboarding tasks" },
-        "primaryKey": ["id"],
         "columns": [
-          { "name": "id", "type": "int", "role": "pk" },
-          { "name": "template_id", "type": "fk", "references": "onboarding_templates", "required": true },
-          { "name": "employee_id", "type": "fk", "references": "employees" },
-          { "name": "title", "type": "text", "required": true, "display": "title" },
           {
-            "name": "phase",
-            "type": "enum",
-            "required": true,
-            "values": ["before", "day_1", "week_1", "month_1"],
-            "default": "before"
+            "ref": "id",
+            "type": "int",
+            "role": "pk"
           },
-          { "name": "due_offset_days", "type": "int", "required": true, "default": 0 },
-          { "name": "done", "type": "boolean", "default": false }
+          {
+            "ref": "template_id",
+            "type": "fk",
+            "references": "onboarding_templates"
+          },
+          {
+            "ref": "employee_id",
+            "type": "fk",
+            "references": "employees"
+          },
+          {
+            "ref": "title",
+            "type": "text"
+          },
+          {
+            "ref": "phase",
+            "type": "enum",
+            "enum": [
+              "before",
+              "day_1",
+              "week_1",
+              "month_1"
+            ]
+          },
+          {
+            "ref": "due_offset_days",
+            "type": "int"
+          },
+          {
+            "ref": "done",
+            "type": "bool"
+          }
         ]
       }
     ]
   },
-
   "pages": [
     {
-      "key": "hr-dashboard",
-      "title": { "key": "mft.hr.page.dashboard", "fallback": "Dashboard" },
-      "path": "/",
-      "type": "page-dashboard",
-      "icon": "layout-dashboard",
-      "nav": { "group": "manifest:hr", "order": 1 },
-      "blocks": [
-        {
-          "kind": "kpi-stat-card",
-          "key": "headcount",
-          "label": { "key": "mft.hr.kpi.headcount", "fallback": "Headcount" },
-          "source": "employees",
-          "metric": "count",
-          "format": "number",
-          "filter": { "status": ["active", "on_leave"] }
-        },
-        {
-          "kind": "kpi-stat-card",
-          "key": "out-today",
-          "label": { "key": "mft.hr.kpi.out_today", "fallback": "Out today" },
-          "source": "leave_requests",
-          "metric": "count",
-          "format": "number",
-          "filter": { "status": ["approved"], "starts_on": "today" }
-        },
-        {
-          "kind": "kpi-stat-card",
-          "key": "awaiting-decision",
-          "label": { "key": "mft.hr.kpi.awaiting", "fallback": "Awaiting a decision" },
-          "source": "leave_requests",
-          "metric": "count",
-          "format": "number",
-          "filter": { "status": ["pending", "manager_approved"] }
-        },
-        {
-          "kind": "kpi-stat-card",
-          "key": "starting-soon",
-          "label": { "key": "mft.hr.kpi.starting", "fallback": "Onboarding open" },
-          "source": "onboarding_tasks",
-          "metric": "count",
-          "format": "number",
-          "filter": { "done": false, "employee_id": "notnull" }
-        },
-        {
-          "kind": "chart-line-area",
-          "key": "headcount-growth",
-          "label": { "key": "mft.hr.chart.growth", "fallback": "Headcount growth" },
-          "source": "employees",
-          "chart": "line-area",
-          "x": { "field": "started_on", "bucket": "quarter" },
-          "y": { "agg": "count" },
-          "cumulative": true,
-          "format": "number"
-        },
-        {
-          "kind": "chart-bar",
-          "key": "leave-by-type",
-          "label": { "key": "mft.hr.chart.by_type", "fallback": "Days taken by leave type" },
-          "source": "leave_requests",
-          "chart": "bar",
-          "x": { "field": "type_id" },
-          "y": { "agg": "sum", "field": "working_days" },
-          "format": "number",
-          "filter": { "status": ["approved"] }
-        },
-        {
-          "kind": "mini-table",
-          "key": "recent-requests",
-          "label": { "key": "mft.hr.block.recent", "fallback": "Recent requests" },
-          "source": "leave_requests",
-          "limit": 8,
-          "orderBy": { "field": "created_at", "dir": "desc" },
-          "columns": ["employee_id", "type_id", "starts_on", "ends_on", "working_days", "status"]
-        }
-      ]
-    },
-    {
-      "key": "hr-people",
-      "title": { "key": "mft.hr.page.people", "fallback": "People" },
-      "path": "/people",
-      "type": "page-directory",
-      "icon": "users",
-      "source": "employees",
-      "nav": { "group": "manifest:hr", "order": 2 },
-      "directory": {
-        "title": "name",
-        "subtitle": "position_id",
-        "avatar": "avatar",
-        "initials": "initials",
-        "tint": "tint",
-        "badge": "status"
+      "ref": "hr-dashboard",
+      "template": "page-dashboard",
+      "title": {
+        "key": "mft.hr.page.dashboard",
+        "fallback": "Dashboard"
       },
-      "search": ["name", "email", "city"],
-      "filters": ["status", "city", "position_id", "manager_id"],
-      "columns": ["name", "email", "position_id", "manager_id", "buddy_id", "city", "started_on", "status"],
-      "children": [
-        {
-          "key": "requests",
-          "label": { "key": "mft.hr.tab.requests", "fallback": "Leave requests" },
-          "source": "leave_requests",
-          "foreignKey": "employee_id",
-          "columns": ["type_id", "starts_on", "ends_on", "working_days", "status", "decided_by"],
-          "orderBy": { "field": "starts_on", "dir": "desc" }
-        },
-        {
-          "key": "reports",
-          "label": { "key": "mft.hr.tab.reports", "fallback": "Reports to this person" },
-          "source": "employees",
-          "foreignKey": "manager_id",
-          "columns": ["name", "position_id", "city", "started_on", "status"]
-        },
-        {
-          "key": "onboarding",
-          "label": { "key": "mft.hr.tab.onboarding", "fallback": "Onboarding" },
-          "source": "onboarding_tasks",
-          "foreignKey": "employee_id",
-          "columns": ["phase", "title", "due_offset_days", "done"],
-          "orderBy": { "field": "due_offset_days", "dir": "asc" }
-        }
-      ]
-    },
-    {
-      "key": "hr-leave",
-      "title": { "key": "mft.hr.page.leave", "fallback": "Approvals" },
-      "path": "/leave",
-      "type": "page-queue-inbox",
-      "icon": "inbox",
-      "source": "leave_requests",
-      "nav": { "group": "manifest:hr", "order": 3 },
-      "tabs": {
-        "field": "status",
-        "values": ["pending", "manager_approved", "approved", "rejected", "cancelled"],
-        "default": "pending",
-        "control": "segmented-control"
-      },
-      "list": {
-        "title": "employee_id",
-        "subtitle": "type_id",
-        "timestamp": "created_at",
-        "badge": "status"
-      },
-      "detail": {
-        "title": "employee_id",
-        "fields": [
-          "type_id",
-          "starts_on",
-          "ends_on",
-          "working_days",
-          "note",
-          "status",
-          "decided_by",
-          "decided_at",
-          "decision_note"
-        ],
-        "edit": ["status", "decision_note"],
-        "actions": [
-          {
-            "key": "approve",
-            "label": "Approve",
-            "set": { "status": "approved", "decided_at": "now" },
-            "undo": true
-          },
-          {
-            "key": "reject",
-            "label": "Reject",
-            "set": { "status": "rejected", "decided_at": "now" },
-            "undo": true
-          }
-        ],
-        "undo": { "view": "toast-stack" }
+      "nav": {
+        "group": "manifest:hr",
+        "icon": "layout-dashboard",
+        "order": 1
       }
     },
     {
-      "key": "hr-calendar",
-      "title": { "key": "mft.hr.page.calendar", "fallback": "Team calendar" },
-      "path": "/calendar",
-      "type": "page-calendar",
-      "icon": "calendar-days",
-      "source": "leave_requests",
-      "nav": { "group": "manifest:hr", "order": 4 },
-      "calendar": {
-        "views": ["calendar-month", "day-agenda"],
-        "default": "calendar-month",
-        "start": "starts_on",
-        "end": "ends_on",
-        "title": "employee_id",
-        "subtitle": "type_id",
-        "tint": "type_id.color",
-        "badge": "status"
+      "ref": "hr-people",
+      "template": "page-directory",
+      "title": {
+        "key": "mft.hr.page.people",
+        "fallback": "People"
       },
-      "filters": ["status", "type_id"],
-      "blocks": [
-        {
-          "kind": "calendar-month",
-          "key": "who-is-out",
-          "label": { "key": "mft.hr.block.out", "fallback": "Who is out" },
-          "sources": [
-            {
-              "source": "leave_requests",
-              "start": "starts_on",
-              "end": "ends_on",
-              "title": "employee_id",
-              "tone": "accent"
-            },
-            { "source": "holidays", "start": "on_date", "title": "name", "tone": "muted" }
-          ]
-        }
-      ]
-    },
-    {
-      "key": "hr-onboarding",
-      "title": { "key": "mft.hr.page.onboarding", "fallback": "Onboarding" },
-      "path": "/onboarding",
-      "type": "page-crud",
-      "icon": "clipboard-check",
-      "source": "onboarding_templates",
-      "nav": { "group": "manifest:hr", "order": 5 },
-      "columns": ["name"],
-      "search": ["name"],
-      "children": [
-        {
-          "key": "tasks",
-          "label": { "key": "mft.hr.tab.tasks", "fallback": "Checklist" },
-          "source": "onboarding_tasks",
-          "foreignKey": "template_id",
-          "columns": ["phase", "title", "due_offset_days", "employee_id", "done"],
-          "orderBy": { "field": "due_offset_days", "dir": "asc" }
-        }
-      ]
-    },
-    {
-      "key": "hr-policies",
-      "title": { "key": "mft.hr.page.policies", "fallback": "Leave policy" },
-      "path": "/policies",
-      "type": "page-crud",
-      "icon": "shield-check",
-      "source": "leave_types",
-      "nav": { "group": "manifest:hr", "order": 6 },
-      "columns": ["name", "short_name", "annual_days", "accrual", "per_month", "color"],
-      "search": ["name"],
-      "filters": ["accrual"],
-      "children": [
-        {
-          "key": "requests",
-          "label": { "key": "mft.hr.tab.type_requests", "fallback": "Requests of this type" },
-          "source": "leave_requests",
-          "foreignKey": "type_id",
-          "columns": ["employee_id", "starts_on", "ends_on", "working_days", "status"],
-          "orderBy": { "field": "starts_on", "dir": "desc" }
-        }
-      ]
-    }
-  ],
-
-  "roles": [
-    {
-      "key": "hr-manager",
-      "name": { "key": "mft.hr.role.hr_manager", "fallback": "People Ops manager" },
-      "description": {
-        "key": "mft.hr.role.hr_manager.desc",
-        "fallback": "Runs the whole people desk: decides on leave, maintains the directory, the leave policy and the holiday calendar, and stamps onboarding checklists. No access to settings or roles."
-      },
-      "permissions": [
-        { "resource": "employees", "actions": ["read", "create", "update"] },
-        { "resource": "departments", "actions": ["read", "create", "update"] },
-        { "resource": "positions", "actions": ["read", "create", "update"] },
-        { "resource": "leave_requests", "actions": ["read", "create", "update"] },
-        { "resource": "leave_types", "actions": ["read", "create", "update"] },
-        { "resource": "holidays", "actions": ["read", "create", "update", "delete"] },
-        { "resource": "onboarding_templates", "actions": ["read", "create", "update", "delete"] },
-        { "resource": "onboarding_tasks", "actions": ["read", "create", "update", "delete"] }
-      ]
-    },
-    {
-      "key": "employee",
-      "name": { "key": "mft.hr.role.employee", "fallback": "Employee" },
-      "description": {
-        "key": "mft.hr.role.employee.desc",
-        "fallback": "The self-service scope the app itself runs in: raise and cancel their own leave requests, read the directory, the leave policy and the holiday calendar, and tick off their own onboarding checklist."
-      },
-      "permissions": [
-        { "resource": "leave_requests", "actions": ["read", "create"], "scope": "own" },
-        { "resource": "onboarding_tasks", "actions": ["read", "update"], "scope": "own" },
-        { "resource": "employees", "actions": ["read"] },
-        { "resource": "departments", "actions": ["read"] },
-        { "resource": "positions", "actions": ["read"] },
-        { "resource": "leave_types", "actions": ["read"] },
-        { "resource": "holidays", "actions": ["read"] }
-      ]
-    }
-  ],
-
-  "settings": [
-    {
-      "key": "company_name",
-      "type": "text",
-      "label": { "key": "mft.hr.set.company_name", "fallback": "Company name" },
-      "required": true
-    },
-    {
-      "key": "work_week",
-      "type": "enum",
-      "label": { "key": "mft.hr.set.work_week", "fallback": "Working week" },
-      "values": ["mon_fri", "mon_sat", "sun_thu"],
-      "default": "mon_fri",
-      "required": true,
-      "help": {
-        "key": "mft.hr.set.work_week.help",
-        "fallback": "Which days count when a request is measured. Days outside it, and any dated public holiday, are skipped."
+      "nav": {
+        "group": "manifest:hr",
+        "icon": "users",
+        "order": 2
       }
     },
     {
-      "key": "escalation_days",
-      "type": "int",
-      "label": { "key": "mft.hr.set.escalation_days", "fallback": "Second-signature threshold" },
-      "default": 5,
-      "required": true,
-      "help": {
-        "key": "mft.hr.set.escalation_days.help",
-        "fallback": "A request longer than this many working days needs People Ops to sign after the manager has."
+      "ref": "hr-leave",
+      "template": "page-queue-inbox",
+      "title": {
+        "key": "mft.hr.page.leave",
+        "fallback": "Approvals"
+      },
+      "nav": {
+        "group": "manifest:hr",
+        "icon": "inbox",
+        "order": 3
       }
     },
     {
-      "key": "leave_year_start",
-      "type": "text",
-      "label": { "key": "mft.hr.set.leave_year_start", "fallback": "Leave year starts" },
-      "default": "01-01",
-      "required": true,
-      "help": {
-        "key": "mft.hr.set.leave_year_start.help",
-        "fallback": "Month and day the leave year rolls over. Entitlement resets here and monthly accrual counts from it."
+      "ref": "hr-calendar",
+      "template": "page-calendar",
+      "title": {
+        "key": "mft.hr.page.calendar",
+        "fallback": "Team calendar"
+      },
+      "nav": {
+        "group": "manifest:hr",
+        "icon": "calendar-days",
+        "order": 4
+      }
+    },
+    {
+      "ref": "hr-onboarding",
+      "template": "page-crud",
+      "title": {
+        "key": "mft.hr.page.onboarding",
+        "fallback": "Onboarding"
+      },
+      "nav": {
+        "group": "manifest:hr",
+        "icon": "clipboard-check",
+        "order": 5
+      }
+    },
+    {
+      "ref": "hr-policies",
+      "template": "page-crud",
+      "title": {
+        "key": "mft.hr.page.policies",
+        "fallback": "Leave policy"
+      },
+      "nav": {
+        "group": "manifest:hr",
+        "icon": "shield-check",
+        "order": 6
       }
     }
   ],
-
-  "capabilities": ["email-delivery", "file-storage"],
-
-  "frontend": {
-    "kind": "spa",
-    "root": ".",
-    "buildCommand": "npm run build",
-    "buildOutput": "dist",
-    "entry": "index.html",
-    "routes": {
-      "home": "/",
-      "request": "/",
-      "directory": "/"
+  "capabilities": [
+    "email-delivery",
+    "file-storage"
+  ],
+  "kind": "app",
+  "frontends": [
+    {
+      "side": "staff",
+      "kind": "spa",
+      "entry": "index.html",
+      "routes": {
+        "home": "/",
+        "request": "/",
+        "directory": "/"
+      }
     }
-  }
+  ]
 }
