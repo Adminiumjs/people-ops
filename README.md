@@ -118,10 +118,10 @@ people desk on its own, running on the bundled demo data. No database, no
 dashboard — a fully static preview of both personas.
 
 **The whole stack, one command.**
-[`docker-compose.yml`](docker-compose.yml) stands up Postgres (seeded with the
-*same* twenty-four people, the same four leave types, the same six requests and
-the same two onboarding boards), an auto-generated Adminium dashboard that runs
-that real database, and the desk itself:
+[`docker-compose.yml`](docker-compose.yml) stands up Postgres (seeded by default
+with the *same* twenty-four people, the same four leave types, the same six
+requests and the same two onboarding boards), an auto-generated Adminium
+dashboard that runs that real database, and the desk itself:
 
 ```bash
 cp .env.example .env      # then set ADMINIUM_SECRET — e.g. openssl rand -hex 32
@@ -131,11 +131,13 @@ docker compose up
 - **People desk** → http://localhost:8080
 - **Adminium dashboard** → http://localhost:4600
 
-On first boot, `hr-db` applies [`db/schema.sql`](db/schema.sql) then
-[`db/seed.sql`](db/seed.sql), and Adminium imports the Foundry database as its
-first source connection, introspects the schema, and generates the back office.
-Finish the ~1-minute first-run wizard at `:4600` — it's pre-pointed at the
-seeded DB. The install spec Adminium reads to configure itself is
+On first boot, `hr-db` applies [`db/schema.sql`](db/schema.sql), installs the
+demo bookkeeping in [`db/demo-toolkit.sql`](db/demo-toolkit.sql), and then runs
+a hook that loads [`db/seed.sql`](db/seed.sql) unless `DEMO_DATA=0`. Adminium
+imports the Foundry database as its first source connection, introspects the
+schema, and generates the back office. Finish the ~1-minute first-run wizard at
+`:4600` — it's pre-pointed at the Foundry DB. The install spec Adminium reads
+to configure itself is
 [`manifest.json`](manifest.json); it scaffolds **8 tables, 6 dashboard pages, 2
 access presets** (`hr-manager`, `employee`) **and 4 settings** into your
 connected database.
@@ -144,6 +146,33 @@ The seeded database is the *same company* the app shows, down to the pinned
 clock: Elif is out sick on 28 July in both places, Tom's twelve-day request sits
 mid-chain in both, and request ids are the codes — row 303 is LR-303, so the
 next one raised is LR-305.
+
+### Demo data
+
+Foundry arrives with the database: `docker compose up` gives you a desk and a
+dashboard with people, requests and boards already in them. Set `DEMO_DATA=0`
+in `.env` before the first `docker compose up` and you get the same full schema
+with nothing in it instead. Neither choice is permanent — the demo rows can be
+loaded later, and taken out again, as often as you like.
+
+| Command | What it does |
+| --- | --- |
+| `npm run demo:status` | What is loaded right now, table by table. |
+| `npm run demo:import` | Load `db/seed.sql`. |
+| `npm run demo:wipe` | Remove the demo rows. |
+| `npm run demo:reset` | Wipe, then import a fresh copy. |
+
+A wipe removes only the rows the seed put there: the schema and your own rows
+stay, and a demo row your own data still depends on is kept rather than
+force-deleted, and reported under `kept`. `ON DELETE CASCADE` still applies,
+though — `leave_requests.employee_id` cascades from `employees`, so a request
+you filed against a demo person goes when they do, counted separately under
+`cascaded`. `wipe` and `reset` ask before they act — pass `-- --yes`
+(`npm run demo:wipe -- --yes`) to skip the question, which is also what a script
+needs, since there is nobody there to answer. Set `DATABASE_URL` to run any of
+these against a Postgres outside the compose file. The full reference, including
+what a wipe reports and how it knows what to remove, is
+[db/README.md](db/README.md).
 
 ## The split: the desk and the back office
 
@@ -185,6 +214,7 @@ src/
   styles/      tokens.css (canonical tokens + leave-type tints), base.css,
                components.css, screens.css
 public/fonts/  self-hosted Manrope + JetBrains Mono (woff2)
+db/            schema.sql, seed.sql and the demo-data toolkit (see db/README.md)
 ```
 
 ## License
