@@ -9,7 +9,7 @@
 import { useEffect, useState } from "react";
 import { Check, X } from "lucide-react";
 
-import { HOLIDAYS, PEOPLE, TODAY } from "../data/live.ts";
+import { PEOPLE, TODAY } from "../data/live.ts";
 import { useI18n } from "../i18n/index.tsx";
 import { dateLong, label } from "../lib/format.ts";
 import { useStore } from "../state/store.ts";
@@ -150,6 +150,7 @@ export function RejectDialog() {
   const askReject = useStore((s) => s.askReject);
   const rejectRequest = useStore((s) => s.rejectRequest);
   const requests = useStore((s) => s.requests);
+  const holidays = useStore((s) => s.holidays);
   const [note, setNote] = useState("");
 
   useEffect(() => {
@@ -161,7 +162,7 @@ export function RejectDialog() {
   if (!request) return null;
 
   const person = PEOPLE.find((p) => p.id === request.person);
-  const days = workingDays(request.start, request.end, HOLIDAYS).count;
+  const days = workingDays(request.start, request.end, holidays).count;
   const blocked = note.trim().length === 0;
 
   return (

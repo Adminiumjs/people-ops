@@ -49,7 +49,32 @@ async function boot(): Promise<void> {
     }
   }
 
-  const { default: App } = await import("./app/App.tsx");
+  /*
+   * REGISTRATION, and it happens HERE for two separate reasons.
+   *
+   * The dynamic imports are the same load-bearing ordering the paragraph above
+   * describes: `state/store.ts` reaches `data/live.ts`, which reads the seam at
+   * module scope, so neither may be imported statically by this file.
+   *
+   * And registration is where an ADD-ON'S STRINGS ARRIVE. `add-ons/registry.ts`
+   * merges each add-on's eight-locale bundle into this app's at module load,
+   * through a function that throws naming the add-on, the locale and the key —
+   * so it has to run before the first render reads a bundle, and it must not be
+   * possible to skip it the way a test can be skipped. Doing it here, rather
+   * than in an effect, is what makes both true.
+   *
+   * In a connected deployment this list comes from the server and the bundles
+   * are imported on demand. Only the SOURCE of the list changes: `createRegistry`
+   * and every surface below it stay exactly as they are, which is the same seam
+   * rule `DataSource` follows.
+   */
+  const [{ default: App }, { useStore }, { demoAddOns }] = await Promise.all([
+    import("./app/App.tsx"),
+    import("./state/store.ts"),
+    import("./add-ons/registry.ts"),
+  ]);
+  useStore.getState().registerAddOns(demoAddOns());
+
   createRoot(container as HTMLElement).render(
     <StrictMode>
       <I18nProvider>

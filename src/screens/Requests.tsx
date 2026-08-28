@@ -9,7 +9,7 @@
 
 import { ChevronDown, Inbox, ClipboardList } from "lucide-react";
 
-import { HOLIDAYS, LEAVE_TYPES, PEOPLE, TODAY } from "../data/live.ts";
+import { LEAVE_TYPES, PEOPLE, TODAY } from "../data/live.ts";
 import type { EventKind, LeaveRequest, RequestStatus } from "../data/types.ts";
 import { useI18n } from "../i18n/index.tsx";
 import { dateLong, dateRange, days, label } from "../lib/format.ts";
@@ -101,6 +101,7 @@ export function MyRequests() {
   const expand = useStore((s) => s.expandRequest);
   const askCancel = useStore((s) => s.askCancel);
   const go = useStore((s) => s.go);
+  const holidays = useStore((s) => s.holidays);
 
   const meId = currentUser(persona);
   const mine = requests
@@ -127,7 +128,7 @@ export function MyRequests() {
       ) : (
         <div style={{ display: "grid", gap: 11 }}>
           {mine.map((r) => {
-            const count = workingDays(r.start, r.end, HOLIDAYS).count;
+            const count = workingDays(r.start, r.end, holidays).count;
             const open = expanded === r.code;
             return (
               <article key={r.code} className="fp-reqrow">
@@ -187,6 +188,7 @@ export function Approvals() {
   const requests = useStore((s) => s.requests);
   const approve = useStore((s) => s.approveRequest);
   const askReject = useStore((s) => s.askReject);
+  const holidays = useStore((s) => s.holidays);
   const queue = pendingQueue(requests);
 
   return (
@@ -208,9 +210,9 @@ export function Approvals() {
         <div style={{ display: "grid", gap: 11 }}>
           {queue.map((r) => {
             const person = PEOPLE.find((p) => p.id === r.person);
-            const count = workingDays(r.start, r.end, HOLIDAYS).count;
-            const balance = balanceFor(r.person, r.type, requests, HOLIDAYS, TODAY);
-            const total = stepsNeeded(r, HOLIDAYS);
+            const count = workingDays(r.start, r.end, holidays).count;
+            const balance = balanceFor(r.person, r.type, requests, holidays, TODAY);
+            const total = stepsNeeded(r, holidays);
             const note = r.events[0]?.note ?? "";
 
             return (

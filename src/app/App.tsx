@@ -9,6 +9,7 @@
 import { useEffect } from "react";
 import type { ComponentType } from "react";
 
+import AddOnDrawer from "../components/AddOnDrawer.tsx";
 import DemoDock from "../components/DemoDock.tsx";
 import { isConnected } from "../data/source.ts";
 import {
@@ -29,6 +30,7 @@ import {
   Onboarding,
   TeamCalendar,
 } from "../screens/Directory.tsx";
+import AddOns from "../screens/AddOns.tsx";
 import Home from "../screens/Home.tsx";
 import Request from "../screens/Request.tsx";
 import { Approvals, MyRequests } from "../screens/Requests.tsx";
@@ -41,6 +43,7 @@ const SCREENS: Record<View, ComponentType> = {
   approvals: Approvals,
   calendar: TeamCalendar,
   onboarding: Onboarding,
+  addons: AddOns,
   notfound: NotFound,
 };
 
@@ -86,6 +89,9 @@ export default function App() {
           real rows those controls either lie or do damage. */}
       {!isConnected() && <DemoDock />}
       <ToastLayer />
+      {/* The manage drawer, beside the app's other overlays: one Escape closes
+          the outermost thing, and `store.escape()` puts this first. */}
+      <AddOnDrawer />
       <ProfileSheet />
       <CancelConfirm />
       <RejectDialog />

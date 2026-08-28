@@ -15,7 +15,7 @@ import {
   UserRoundPlus,
 } from "lucide-react";
 
-import { HOLIDAYS, LEAVE_TYPES, PEOPLE, TODAY } from "../data/live.ts";
+import { LEAVE_TYPES, PEOPLE, TODAY } from "../data/live.ts";
 import { LEAVE_TYPE_KEYS, TEAMS } from "../data/demo.ts";
 import { useI18n } from "../i18n/index.tsx";
 import { dateLong, dayNumber, label, monthLong, percent, weekdayInitials } from "../lib/format.ts";
@@ -117,8 +117,15 @@ export function TeamCalendar() {
   const [year, month] = useStore((s) => s.calendarMonth);
   const step = useStore((s) => s.stepCalendar);
   const openProfile = useStore((s) => s.openProfile);
+  const holidays = useStore((s) => s.holidays);
 
-  const grid = monthGrid(year, month, requests, PEOPLE, HOLIDAYS);
+  const grid = monthGrid(year, month, requests, PEOPLE, holidays);
+  /*
+   * Whether any day drawn in THIS month came from an add-on, which is what
+   * decides whether the legend explains the marker. A legend entry for a mark
+   * that is nowhere on the grid is a legend nobody can match to anything.
+   */
+  const anyFromAddOn = grid.some((c) => c.inMonth && c.holiday?.fromAddOn !== undefined);
   const anyAbsence = grid.some((c) => c.inMonth && c.absences.length > 0);
   const headers = weekdayInitials();
 
@@ -169,7 +176,27 @@ export function TeamCalendar() {
           >
             <span className="fp-cal__num fp-mono">{dayNumber(cell.serial)}</span>
             {cell.holiday !== null && (
-              <span className="fp-cal__holiday">{label(cell.holiday.name)}</span>
+              /*
+               * A MARKER AND NOT A CHIP, and it is the one place the labelling
+               * had to bend to the surface. A month grid cell is a few
+               * millimetres wide and already carries a day number, a name and a
+               * stack of absence bars; the words "from an add-on" beside each
+               * one would push the name out of every cell in the month. So the
+               * mark is a dot, the sentence is on the cell as a `title`, and the
+               * legend under the grid says what the dot means — which is how
+               * every other colour on this calendar is already explained.
+               */
+              <span
+                className="fp-cal__holiday"
+                data-from-add-on={cell.holiday.fromAddOn !== undefined ? "true" : undefined}
+                title={
+                  cell.holiday.fromAddOn !== undefined
+                    ? t("addon.host.provided.title")
+                    : undefined
+                }
+              >
+                {label(cell.holiday.name)}
+              </span>
             )}
             {cell.absences.map((a) => {
               const meta = LEAVE_TYPES[a.type];
@@ -217,6 +244,12 @@ export function TeamCalendar() {
             />
             {t("calendar.legend.holiday")}
           </span>
+          {anyFromAddOn && (
+            <span className="fp-legend__item">
+              <span className="fp-legend__dot" aria-hidden="true" />
+              {t("addon.host.provided")}
+            </span>
+          )}
         </div>
       </Panel>
     </div>

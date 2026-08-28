@@ -13,11 +13,11 @@
 
 import { CalendarCheck, CircleAlert, Info } from "lucide-react";
 
-import { HOLIDAYS, LEAVE_TYPES, PEOPLE, TODAY } from "../data/live.ts";
+import { LEAVE_TYPES, PEOPLE, TODAY } from "../data/live.ts";
 import { LEAVE_TYPE_KEYS, fromSer } from "../data/demo.ts";
 import { useI18n } from "../i18n/index.tsx";
 import { dateLong, dateRange, dateShort, days, label } from "../lib/format.ts";
-import { balanceFor, validateRequest } from "../lib/leave.ts";
+import { balanceFor, holidayOn, validateRequest } from "../lib/leave.ts";
 import {
   currentUser,
   draftChain,
@@ -25,6 +25,7 @@ import {
   personName,
   useStore,
 } from "../state/store.ts";
+import { FromAddOn } from "../components/AddOnBits.tsx";
 import { Button, Chip, Mono, Panel } from "../components/Primitives.tsx";
 
 /** `YYYY-MM-DD` for a date input, built in UTC to match the serial. */
@@ -57,6 +58,7 @@ export default function Request() {
   const submit = useStore((s) => s.submitRequest);
   const clearDraft = useStore((s) => s.clearDraft);
   const go = useStore((s) => s.go);
+  const holidays = useStore((s) => s.holidays);
 
   const meId = currentUser(persona);
 
@@ -64,9 +66,9 @@ export default function Request() {
     return <Receipt code={submittedCode} onAgain={clearDraft} onView={() => go("requests")} />;
   }
 
-  const { count, skipped } = draftWorkingDays(start, end);
-  const balance = balanceFor(meId, type, requests, HOLIDAYS, TODAY);
-  const check = validateRequest(meId, type, start, end, requests, HOLIDAYS, TODAY);
+  const { count, skipped } = draftWorkingDays(start, end, holidays);
+  const balance = balanceFor(meId, type, requests, holidays, TODAY);
+  const check = validateRequest(meId, type, start, end, requests, holidays, TODAY);
   const chain = draftChain(meId, count);
 
   const blockedReason = check.ok
@@ -88,7 +90,7 @@ export default function Request() {
             <div className="fp-typepick">
               {LEAVE_TYPE_KEYS.map((key) => {
                 const meta = LEAVE_TYPES[key];
-                const left = balanceFor(meId, key, requests, HOLIDAYS, TODAY).remaining;
+                const left = balanceFor(meId, key, requests, holidays, TODAY).remaining;
                 return (
                   <button
                     key={key}
@@ -185,6 +187,20 @@ export default function Request() {
                         {s.why === "weekend"
                           ? t("request.summary.skipped.weekend")
                           : label(s.why)}
+                        {/*
+                          LOOKED UP RATHER THAN CARRIED. `SkippedDay` is
+                          `{ serial, why }` and `why` is a name, not a record, so
+                          the provenance is not in what the engine returned —
+                          and adding a field to `lib/leave.ts` to carry it would
+                          be changing the engine for a presentation fact. The
+                          engine is source-agnostic on purpose: it takes the
+                          holidays array as an argument and knows nothing about
+                          where any of them came from. This screen has that same
+                          array, so it asks it.
+                         */}
+                        {holidayOn(s.serial, holidays)?.fromAddOn !== undefined && (
+                          <FromAddOn />
+                        )}
                       </span>
                     </li>
                   ))}
@@ -253,11 +269,12 @@ function Receipt({
 }) {
   const { t } = useI18n();
   const requests = useStore((s) => s.requests);
+  const holidays = useStore((s) => s.holidays);
   const request = requests.find((r) => r.code === code);
   const person = PEOPLE.find((p) => p.id === request?.person);
   const chain = draftChain(
     request?.person ?? "",
-    draftWorkingDays(request?.start ?? null, request?.end ?? null).count,
+    draftWorkingDays(request?.start ?? null, request?.end ?? null, holidays).count,
   );
 
   return (

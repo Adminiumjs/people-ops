@@ -9,7 +9,7 @@
 
 import { CalendarHeart, PartyPopper, Plane } from "lucide-react";
 
-import { HOLIDAYS, LEAVE_TYPES, PEOPLE, TODAY } from "../data/live.ts";
+import { LEAVE_TYPES, PEOPLE, TODAY } from "../data/live.ts";
 import { LEAVE_TYPE_KEYS } from "../data/demo.ts";
 import type { LeaveTypeKey } from "../data/types.ts";
 import { useI18n } from "../i18n/index.tsx";
@@ -22,6 +22,7 @@ import {
   workingDays,
 } from "../lib/leave.ts";
 import { currentUser, personName, useStore } from "../state/store.ts";
+import { FromAddOn } from "../components/AddOnBits.tsx";
 import { Avatar, Button, Chip, Empty, Mono, Panel } from "../components/Primitives.tsx";
 
 export default function Home() {
@@ -30,11 +31,18 @@ export default function Home() {
   const requests = useStore((s) => s.requests);
   const go = useStore((s) => s.go);
   const openProfile = useStore((s) => s.openProfile);
+  /*
+   * The app's own holidays PLUS whatever an enabled add-on supplies, taken from
+   * the one place the merge happens. Every screen and the store read this same
+   * array, which is what stops the approvals queue and the request form
+   * disagreeing about how many working days a request costs.
+   */
+  const allHolidays = useStore((s) => s.holidays);
 
   const meId = currentUser(persona);
   const out = outOn(TODAY, requests, PEOPLE);
   const next = nextTimeOff(meId, requests, TODAY);
-  const holidays = holidaysThisQuarter(HOLIDAYS, TODAY);
+  const holidays = holidaysThisQuarter(allHolidays, TODAY);
 
   return (
     <div className="fp-screen">
@@ -106,8 +114,8 @@ export default function Home() {
                 <Chip>
                   {t(
                     "chrome.workingDays",
-                    { count: days(workingDays(next.start, next.end, HOLIDAYS).count) },
-                    workingDays(next.start, next.end, HOLIDAYS).count,
+                    { count: days(workingDays(next.start, next.end, allHolidays).count) },
+                    workingDays(next.start, next.end, allHolidays).count,
                   )}
                 </Chip>
                 <Chip tone="accent">
@@ -129,7 +137,12 @@ export default function Home() {
               {holidays.map((h) => (
                 <li key={h.serial}>
                   <PartyPopper size={15} aria-hidden="true" />
-                  <span>{label(h.name)}</span>
+                  <span>
+                    {label(h.name)}
+                    {/* A day this app did not put here says so, next to its own
+                        name rather than in a footnote under the list. */}
+                    {h.fromAddOn !== undefined && <FromAddOn />}
+                  </span>
                   <Mono className="fp-holidays__date">{dateShort(h.serial)}</Mono>
                 </li>
               ))}
@@ -144,8 +157,9 @@ export default function Home() {
 function BalanceCard({ type, personId }: { type: LeaveTypeKey; personId: string }) {
   const { t } = useI18n();
   const requests = useStore((s) => s.requests);
+  const holidays = useStore((s) => s.holidays);
   const meta = LEAVE_TYPES[type];
-  const balance = balanceFor(personId, type, requests, HOLIDAYS, TODAY);
+  const balance = balanceFor(personId, type, requests, holidays, TODAY);
 
   // The bar shows how much of the year's entitlement has been EARNED so far,
   // which is a different question from how much is left.

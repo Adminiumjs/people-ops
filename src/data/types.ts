@@ -17,6 +17,7 @@ export type View =
   | "approvals"
   | "calendar"
   | "onboarding"
+  | "addons"
   | "notfound";
 
 export type Persona = "employee" | "hr";
@@ -50,8 +51,44 @@ export interface LeaveType {
 export interface Holiday {
   /** Day serial — whole days since the Unix epoch, UTC. */
   serial: number;
-  /** i18n key for the holiday's name. */
+  /**
+   * The holiday's name — an i18n KEY for a seeded day, and a LITERAL for one an
+   * add-on supplied.
+   *
+   * `format.label()` resolves either, because it falls back to the raw string
+   * when the bundle has no key for it. That fallback is what lets an imported
+   * day carry the country's own name for itself — `Tag der Deutschen Einheit`,
+   * `Velký pátek` — without the add-on inventing i18n keys this app would then
+   * have to translate into eight languages it has no business translating a
+   * German public holiday into. A holiday's name is a proper noun belonging to
+   * a country; translating it renames it.
+   */
   name: string;
+  /**
+   * The key of the add-on that supplied this day, absent for one of the app's
+   * own.
+   *
+   * ── WHY THE FIELD IS HERE AND WHAT IS NOT ALLOWED TO READ IT ──────────────
+   *
+   * Every day an add-on put on this app's calendar has to be VISIBLY
+   * add-on-supplied wherever it appears — the holidays panel, the request
+   * form's skipped-day list, the team calendar — because a reader who sees a
+   * new closed day appear on their leave form is owed the fact that it did not
+   * come out of this app. This is how the three screens know to draw the chip.
+   *
+   * IT IS NOT RENDERED. What the screens draw is this app's own neutral words
+   * for "an add-on supplied this", not the key and not the add-on's name — the
+   * first is a machine identifier and the second would put an add-on's identity
+   * on three ordinary screens and drag the not-affiliated rule onto all of them
+   * (24 AC6). The key is carried rather than a bare `boolean` so that a second
+   * day-set add-on can be told from the first without a second field, which is
+   * a distinction a boolean would have to be replaced to make.
+   *
+   * OPTIONAL, so the app's own seeded rows are byte-identical to what they were
+   * before the seam existed (24 D6): nothing sets it unless an add-on supplied
+   * the row.
+   */
+  fromAddOn?: string;
 }
 
 export type Team = "Design" | "Workshop" | "Ops";

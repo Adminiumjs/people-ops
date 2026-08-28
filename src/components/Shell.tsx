@@ -10,6 +10,7 @@ import { Segmented } from "./Primitives.tsx";
 
 import { useMemo, useState } from "react";
 import {
+  Blocks,
   CalendarDays,
   CalendarPlus,
   ClipboardList,
@@ -37,7 +38,8 @@ type NavKey =
   | "chrome.nav.directory"
   | "chrome.nav.approvals"
   | "chrome.nav.calendar"
-  | "chrome.nav.onboarding";
+  | "chrome.nav.onboarding"
+  | "addon.host.nav";
 
 interface NavEntry {
   view: View;
@@ -71,6 +73,15 @@ function useNav(): NavEntry[] {
       },
       { view: "calendar", labelKey: "chrome.nav.calendar", icon: CalendarDays },
       { view: "onboarding", labelKey: "chrome.nav.onboarding", icon: UserRoundPlus },
+      /*
+       * ADD-ONS IS HR-ONLY, and it is the one nav entry whose placement is an
+       * argument rather than a category. `settings.add-on.panel` is an ADMIN
+       * surface; both personas here are staff, and the one that already
+       * approves leave and runs onboarding is the one that should be choosing
+       * where the business's closed days come from — a choice that moves every
+       * balance in the app.
+       */
+      { view: "addons", labelKey: "addon.host.nav", icon: Blocks },
     ];
   }, [persona, requests]);
 }
