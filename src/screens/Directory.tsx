@@ -15,14 +15,8 @@ import {
   UserRoundPlus,
 } from "lucide-react";
 
-import {
-  HOLIDAYS,
-  LEAVE_TYPES,
-  LEAVE_TYPE_KEYS,
-  PEOPLE,
-  TEAMS,
-  TODAY,
-} from "../data/demo.ts";
+import { HOLIDAYS, LEAVE_TYPES, PEOPLE, TODAY } from "../data/live.ts";
+import { LEAVE_TYPE_KEYS, TEAMS } from "../data/demo.ts";
 import { useI18n } from "../i18n/index.tsx";
 import { dateLong, dayNumber, label, monthLong, percent, weekdayInitials } from "../lib/format.ts";
 import { monthGrid, onboardingProgress, outOn } from "../lib/leave.ts";

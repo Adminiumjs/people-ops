@@ -13,7 +13,8 @@
  * counted in whole days and a serial cannot drift across a timezone boundary.
  */
 
-import { LEAVE_TYPES, fromSer } from "../data/demo.ts";
+import { LEAVE_TYPES } from "../data/live.ts";
+import { fromSer } from "../data/demo.ts";
 import type {
   Holiday,
   LeaveRequest,

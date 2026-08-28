@@ -9,7 +9,7 @@
 
 import { ChevronDown, Inbox, ClipboardList } from "lucide-react";
 
-import { HOLIDAYS, LEAVE_TYPES, PEOPLE, TODAY } from "../data/demo.ts";
+import { HOLIDAYS, LEAVE_TYPES, PEOPLE, TODAY } from "../data/live.ts";
 import type { EventKind, LeaveRequest, RequestStatus } from "../data/types.ts";
 import { useI18n } from "../i18n/index.tsx";
 import { dateLong, dateRange, days, label } from "../lib/format.ts";

@@ -9,7 +9,8 @@
 
 import { CalendarHeart, PartyPopper, Plane } from "lucide-react";
 
-import { HOLIDAYS, LEAVE_TYPES, LEAVE_TYPE_KEYS, PEOPLE, TODAY } from "../data/demo.ts";
+import { HOLIDAYS, LEAVE_TYPES, PEOPLE, TODAY } from "../data/live.ts";
+import { LEAVE_TYPE_KEYS } from "../data/demo.ts";
 import type { LeaveTypeKey } from "../data/types.ts";
 import { useI18n } from "../i18n/index.tsx";
 import { dateFull, dateLong, dateRange, dateShort, days, label } from "../lib/format.ts";

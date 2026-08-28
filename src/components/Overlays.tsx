@@ -9,7 +9,7 @@
 import { useEffect, useState } from "react";
 import { Check, X } from "lucide-react";
 
-import { HOLIDAYS, PEOPLE, TODAY } from "../data/demo.ts";
+import { HOLIDAYS, PEOPLE, TODAY } from "../data/live.ts";
 import { useI18n } from "../i18n/index.tsx";
 import { dateLong, label } from "../lib/format.ts";
 import { useStore } from "../state/store.ts";

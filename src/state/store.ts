@@ -8,15 +8,8 @@
 
 import { create } from "zustand";
 
-import {
-  HOLIDAYS,
-  HR_PERSON,
-  ME,
-  ONBOARDING,
-  PEOPLE,
-  SEED_REQUESTS,
-  TODAY,
-} from "../data/demo.ts";
+import { HOLIDAYS, ONBOARDING, PEOPLE, SEED_REQUESTS, TODAY } from "../data/live.ts";
+import { HR_PERSON, ME } from "../data/demo.ts";
 import type {
   LeaveRequest,
   LeaveTypeKey,

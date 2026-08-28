@@ -13,7 +13,8 @@
 
 import { CalendarCheck, CircleAlert, Info } from "lucide-react";
 
-import { HOLIDAYS, LEAVE_TYPES, LEAVE_TYPE_KEYS, PEOPLE, TODAY, fromSer } from "../data/demo.ts";
+import { HOLIDAYS, LEAVE_TYPES, PEOPLE, TODAY } from "../data/live.ts";
+import { LEAVE_TYPE_KEYS, fromSer } from "../data/demo.ts";
 import { useI18n } from "../i18n/index.tsx";
 import { dateLong, dateRange, dateShort, days, label } from "../lib/format.ts";
 import { balanceFor, validateRequest } from "../lib/leave.ts";
