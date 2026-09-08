@@ -7,9 +7,9 @@
  * EXISTS, under the name `HOSTED_SLOTS` — the same identifier this file uses
  * for the ids THIS app draws. Importing the wrong one is the single trap the
  * host kit's config calls out by name, and it fails quietly rather than loudly:
- * every check keyed off this list would silently widen to twelve ids, the
- * empty-behaviour table below would need twelve rows nobody thought about, and
- * the mount component would accept a slot no screen here draws.
+ * every check keyed off this list would silently widen to the whole registry,
+ * the empty-behaviour table below would need a row per id nobody thought
+ * about, and the mount component would accept a slot no screen here draws.
  *
  * So this list is ours, it is narrower, and `mountsGuard` asserts it is a
  * strict SUBSET of the registry — a mis-import is then a named failure instead
