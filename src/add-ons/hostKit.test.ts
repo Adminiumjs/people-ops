@@ -39,10 +39,21 @@ import {
   labelPairingSourceGuard,
   lexiconGuard,
   payloadCastsGuard,
+  deliveryClaimsGuard,
+  recordPayloadGuard,
   stylesGuard,
   tierGuard,
   vendoredGuard,
 } from "../testing/kit/index.ts";
+
+/**
+ * Claims about a delivery this app has already answered for (34 D19).
+ *
+ * Filled in below, per key, with the argument being made — see
+ * `testing/kit/delivery-claims.ts` for the three that are legitimate.
+ */
+const DELIVERY_CLAIMS: Record<string, string> = {};
+
 
 /*
  * IMPORTING THE REGISTRY IS THE POINT, not a formality.
@@ -115,6 +126,18 @@ vendoredGuard(hostKit);
 stylesGuard(hostKit);
 
 /** The tier this app declared, and the cost of the one it did not take. */
+/*
+ * 34 D19. This app labels no simulation — it has no demo-marker convention at
+ * all — so every claim it makes has to be answered in `claimsDeclared`, by
+ * name, with the argument being made.
+ */
+deliveryClaimsGuard(hostKit, {
+  bundleFor: (locale) => MESSAGES[locale as never] ?? {},
+  demoLabels: {},
+  claimsDeclared: DELIVERY_CLAIMS,
+});
+recordPayloadGuard(hostKit);
+
 tierGuard(hostKit);
 
 /* ─────────────────────────────────────────────────────────────────────────── */
