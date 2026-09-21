@@ -327,6 +327,9 @@
         "group": "manifest:hr",
         "icon": "users",
         "order": 2
+      },
+      "bindings": {
+        "rows": "employees"
       }
     },
     {
@@ -340,6 +343,9 @@
         "group": "manifest:hr",
         "icon": "inbox",
         "order": 3
+      },
+      "bindings": {
+        "rows": "leave_requests"
       }
     },
     {
@@ -353,6 +359,9 @@
         "group": "manifest:hr",
         "icon": "calendar-days",
         "order": 4
+      },
+      "bindings": {
+        "rows": "leave_requests"
       }
     },
     {
@@ -366,6 +375,9 @@
         "group": "manifest:hr",
         "icon": "clipboard-check",
         "order": 5
+      },
+      "bindings": {
+        "rows": "onboarding_tasks"
       }
     },
     {
@@ -379,6 +391,9 @@
         "group": "manifest:hr",
         "icon": "shield-check",
         "order": 6
+      },
+      "bindings": {
+        "rows": "leave_types"
       }
     }
   ],
