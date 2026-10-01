@@ -12,12 +12,12 @@
  * So this file drives the real store, the real merge and the real leave engine,
  * and asserts the four claims the retrofit makes:
  *
- *   1. WITH THE ADD-ON OFF, NOTHING CHANGED (24 D6) — and not "changed
+ *   1. WITH THE ADD-ON OFF, NOTHING CHANGED — and not "changed
  *      equivalently": the app gets back the very array it had before.
  *   2. AN IMPORTED DAY IS REAL HOST ARITHMETIC. The working-day count moves,
  *      through `lib/leave.ts`, unmodified.
  *   3. A DAY THIS APP ALREADY KNOWS IS NOT DUPLICATED.
- *   4. DISCONNECTING KEEPS THE DATA (24 D16), and reconnecting proves it.
+ *   4. DISCONNECTING KEEPS THE DATA, and reconnecting proves it.
  *
  * ── THE ONE THING THIS FILE DOES THAT SHIPPED CODE MAY NOT ──────────────────
  *
@@ -78,7 +78,7 @@ beforeEach(() => {
   useStore.getState().registerAddOns(demoAddOns());
 });
 
-describe("with the add-on off, this is the app that shipped before the seam (24 D6)", () => {
+describe("with the add-on off, this is the app that shipped before the seam", () => {
   it("hands back the app's own holiday array, by identity", () => {
     /*
      * IDENTITY AND NOT EQUALITY, and the difference is the whole claim. A
@@ -92,7 +92,8 @@ describe("with the add-on off, this is the app that shipped before the seam (24 
 
   it("contributes nothing while nothing is enabled, whatever is stored", () => {
     // Values present, add-on switched off: still nothing. `enabled` and the
-    // settings document are separate facts, which is what makes D16 possible.
+    // settings document are separate facts, which is what lets a disconnect
+    // keep the data.
     useStore.getState().patchAddOnSettings(ADD_ON.key, daysDocument(IMPORTED));
     expect(useStore.getState().holidays).toBe(HOLIDAYS);
     expect(addOnHolidays({ [ADD_ON.key]: daysDocument(IMPORTED) }, new Set())).toEqual([]);
@@ -176,7 +177,7 @@ describe("an imported day is real arithmetic in this app's own engine", () => {
   });
 });
 
-describe("disconnecting removes the contribution and keeps the data (24 D16)", () => {
+describe("disconnecting removes the contribution and keeps the data", () => {
   beforeEach(() => {
     useStore.getState().connectAddOn(ADD_ON.key);
     useStore.getState().patchAddOnSettings(ADD_ON.key, daysDocument(IMPORTED));

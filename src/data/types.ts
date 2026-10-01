@@ -79,13 +79,13 @@ export interface Holiday {
    * IT IS NOT RENDERED. What the screens draw is this app's own neutral words
    * for "an add-on supplied this", not the key and not the add-on's name — the
    * first is a machine identifier and the second would put an add-on's identity
-   * on three ordinary screens and drag the not-affiliated rule onto all of them
-   * (24 AC6). The key is carried rather than a bare `boolean` so that a second
+   * on three ordinary screens and drag the not-affiliated rule onto all of
+   * them. The key is carried rather than a bare `boolean` so that a second
    * day-set add-on can be told from the first without a second field, which is
    * a distinction a boolean would have to be replaced to make.
    *
    * OPTIONAL, so the app's own seeded rows are byte-identical to what they were
-   * before the seam existed (24 D6): nothing sets it unless an add-on supplied
+   * before the seam existed: nothing sets it unless an add-on supplied
    * the row.
    */
   fromAddOn?: string;

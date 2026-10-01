@@ -68,7 +68,7 @@ interface State {
    * of a static array only the SOURCE of the list changes. It is also what
    * makes the seam installable before any add-on exists: with an empty registry
    * every slot draws its fallback and the app is exactly the app that shipped
-   * before it (24 D6).
+   * before it.
    */
   registry: AddOnRegistry;
   enabled: Set<string>;
@@ -269,7 +269,7 @@ export const useStore = create<State>((set, get) => ({
    * DISCONNECTING REMOVES SURFACES AND CONTRIBUTIONS. IT NEVER REMOVES DATA.
    * ═══════════════════════════════════════════════════════════════════════════
    *
-   * 24 D16, and in this app the promise needs saying in three parts because two
+   * In this app the promise needs saying in three parts because two
    * of them pull in opposite directions and a reader is owed both.
    *
    * WHAT GOES: the add-on's fills stop resolving, so its panel is gone from the
@@ -278,9 +278,9 @@ export const useStore = create<State>((set, get) => ({
    * app going on counting closed days supplied by something that is switched
    * off, with the only screen that could show or remove them removed: a person
    * whose leave request came back one day shorter would have nowhere to go and
-   * look. It would also break D6 outright — with the add-on off, this app is
-   * supposed to be the app that shipped before the seam existed, and an app
-   * still doing arithmetic on an add-on's data is not.
+   * look. It would also break the seam's first promise — with the add-on off,
+   * this app is supposed to be the app that shipped before the seam existed,
+   * and an app still doing arithmetic on an add-on's data is not.
    *
    * WHAT STAYS: every day that was imported, and every day somebody typed in by
    * hand. They are the add-on's own document, they are not touched here, and
@@ -599,7 +599,7 @@ export const useStore = create<State>((set, get) => ({
        * oversight. This resets the seeded fiction — requests, checklists, the
        * view — and an add-on's day-set is neither seeded nor fiction: somebody
        * chose a country and pressed import. Clearing it here would make the
-       * demo dock a destructive control over data D16 says a DISCONNECT may not
+       * demo dock a destructive control over data a DISCONNECT may not
        * even touch, and it would do it on a button labelled "reset the demo".
        */
       managingAddOn: null,

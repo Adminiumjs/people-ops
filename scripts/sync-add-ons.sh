@@ -48,7 +48,7 @@
 # WHAT IS DELIBERATELY NOT COPIED, and none of it is an oversight:
 #   *.test.ts(x)    the monorepo runs its own suites; re-running them here would
 #                   assert the copy rather than the thing (and they pull in zod,
-#                   which this app does not ship — 24 D7).
+#                   which this app does not ship).
 #   src/testing/    each package's own conformance harness and word list, same
 #                   reason. The shared package's `testing/` entry point, where
 #                   its zod validators live, is never vendored either.
@@ -103,7 +103,7 @@ FILES_holiday_calendars=(
   ui/SettingsPanel.tsx ui/atoms.tsx
 )
 
-# Modules that must never be reachable from the browser half (24 D15), and the
+# Modules that must never be reachable from the browser half, and the
 # server ENTRY POINTS a manifest's `provides[].server` names.
 #
 # THIS ADD-ON HAS NONE OF THEM — it declares `connect: { kind: "none" }`, holds
@@ -278,7 +278,7 @@ cmd_status() {
       done < <(cd "$dest" && find . -type f | sed 's|^\./||' | sort)
 
       if [ "$key" != host ]; then
-        # 24 D15: the server half must not be reachable from a browser bundle.
+        # The server half must not be reachable from a browser bundle.
         for f in "${FORBIDDEN[@]}"; do
           [ -e "$dest/$f" ] && { state="SECRET-LEAK $f"; drift=1; }
         done

@@ -1,14 +1,13 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 /**
- * A `DataSource` backed by a real Adminium instance (28-public-surface.md §5.2,
- * 28-T28 wave 4).
+ * A `DataSource` backed by a real Adminium instance.
  *
  * ── READS DO NOT BECOME ASYNC ──────────────────────────────────────────────
  * `loadSnapshot` fetches the whole read-set once, before React mounts, and
  * hands back the same SYNCHRONOUS shapes `demoSource` returns.
  *
  * ── THIS APP IS STAFF-ONLY ─────────────────────────────────────────────────
- * §5.3: people-ops has no customer side, and employee self-service is internal
+ * people-ops has no customer side, and employee self-service is internal
  * rather than public. So the key this reads with is a STAFF-side one, and
  * nothing here is reachable by a member of the public.
  *
@@ -23,7 +22,7 @@
  *    seeded fiction.
  *  • **Leave types are recognised by NAME**, because `LeaveTypeKey` is a
  *    compile-time union of four members and nothing in the schema carries it.
- *    That is the same WS-I defect clinic-desk carries for visit types: rename
+ *    That is the same defect clinic-desk carries for visit types: rename
  *    "Annual leave" in the dashboard and its rows stop resolving. A row that
  *    does not resolve is DROPPED rather than guessed at, which is the honest
  *    outcome and is itself the argument for the `key` column.
@@ -38,7 +37,7 @@
  *     `leave_request_decisions` child table.
  *  3. **A leave type has no icon or tint token.** `color` is a hex value the
  *     app's CSS custom properties do not take. Both come from the catalogue
- *     below, keyed by the resolved type, which is WS-I G4 for this repo.
+ *     below, keyed by the resolved type.
  *
  * ── TIME IS A DAY SERIAL, AND STAYS ONE ────────────────────────────────────
  * Leave is counted in whole days, so the app works in serials (days since the
@@ -91,7 +90,7 @@ interface WireOnboardingTask {
 }
 
 /*
- * WS-I GAP — a leave type's identity, recognised by its display name because
+ * SCHEMA GAP — a leave type's identity, recognised by its display name because
  * nothing in the schema carries the union member the app is typed against.
  */
 const TYPE_BY_NAME: Record<string, LeaveTypeKey> = {
@@ -101,7 +100,7 @@ const TYPE_BY_NAME: Record<string, LeaveTypeKey> = {
   "Volunteer day": "volunteer",
 };
 
-/* WS-I G4 — the icon and the tint tokens, which have no columns. */
+/* The icon and the tint tokens, which have no columns. */
 const TYPE_STYLE: Record<LeaveTypeKey, { icon: string; tint: string; tintSoft: string }> = {
   annual: { icon: "plane", tint: "var(--lt-annual)", tintSoft: "var(--lt-annual-soft)" },
   sick: { icon: "thermometer", tint: "var(--lt-sick)", tintSoft: "var(--lt-sick-soft)" },

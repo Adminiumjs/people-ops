@@ -85,7 +85,7 @@ export default function App() {
       <Shell>
         <CurrentScreen />
       </Shell>
-      {/* §5.2 item 8 — the dock resets and advances seeded fiction. Against
+      {/* The dock resets and advances seeded fiction. Against
           real rows those controls either lie or do damage. */}
       {!isConnected() && <DemoDock />}
       <ToastLayer />

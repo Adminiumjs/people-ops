@@ -103,12 +103,12 @@ export const hostKit: HostKitConfig<HostedSlotId> = {
    * around the mount component, none of which this app has ever needed for
    * anything else.
    *
-   * ADDING `jsdom` WOULD NOT BREACH 25 D11 and nobody should think it would:
-   * that rule is about RUNTIME dependencies, about what reaches a browser, and
-   * a devDependency used by `vitest run` reaches no bundle. Both hosts that
-   * already carry this seam have had `jsdom` since wave 4b with no change to
-   * what they ship. The reason this app sits at tier 1 is the harness, not the
-   * dependency.
+   * ADDING `jsdom` WOULD NOT BREACH THE NO-NEW-DEPENDENCY RULE and nobody should
+   * think it would: that rule is about RUNTIME dependencies, about what reaches
+   * a browser, and a devDependency used by `vitest run` reaches no bundle. Both
+   * hosts that already carry this seam have had `jsdom` all along with no
+   * change to what they ship. The reason this app sits at tier 1 is the
+   * harness, not the dependency.
    *
    * DECLARING TIER 1 WHILE CARRYING `jsdom` IS A FAILURE with no exemption
    * field, and `tierGuard` checks exactly that. So this line and this app's
@@ -192,7 +192,7 @@ export const hostKit: HostKitConfig<HostedSlotId> = {
    * EMPTY, and it is meant to stay that way. The sweep reports any `.tsx` that
    * prints an add-on's `name`, `shortName` or `monogram` and mounts no
    * `Affiliation`; in this app exactly one component prints those, and it
-   * mounts one. An exemption list is where nine of wave 4b's holes came from,
+   * mounts one. An exemption list is where nine earlier holes came from,
    * and the guard holds every entry to two things — the file still exists, and
    * it is still subject to the rule it is exempt from — precisely so a
    * forgotten entry cannot go on widening the rule after the file it named has

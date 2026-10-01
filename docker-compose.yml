@@ -77,10 +77,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      # Connected mode (28-T28). Unset — which is the default — builds the demo
+      # Connected mode. Unset — which is the default — builds the demo
       # exactly as before; Vite inlines these, so they are build args and not
       # `environment:`, and changing either needs `--build` to take effect.
-      # This app is STAFF-ONLY (§5.3), so the key is a staff-side one.
+      # This app is STAFF-ONLY, so the key is a staff-side one.
       args:
         VITE_ADMINIUM_API_BASE_URL: ${VITE_ADMINIUM_API_BASE_URL:-}
         VITE_ADMINIUM_PUBLISHABLE_KEY: ${VITE_ADMINIUM_PUBLISHABLE_KEY:-}

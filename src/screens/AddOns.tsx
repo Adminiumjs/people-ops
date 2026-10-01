@@ -14,7 +14,7 @@
  * sensibly LIVES, not about withholding it. Anything that must actually be
  * withheld belongs in a role.
  *
- * ── AND WHAT IT LOOKS LIKE WITH NOTHING REGISTERED (24 D6) ──────────────────
+ * ── AND WHAT IT LOOKS LIKE WITH NOTHING REGISTERED ───────────────────────────
  *
  * An honest empty state, and the rest of the app untouched. The criterion the
  * retrofit is held to is that with no add-ons registered every slot draws its
@@ -102,7 +102,7 @@ export default function AddOns() {
                   {/*
                     ONE BUTTON, AND SWITCHING OFF IS NOT ON IT. Connecting is a
                     decision with nothing to lose; disconnecting takes a screen
-                    away and stops an add-on's days counting, and D16 says the
+                    away and stops an add-on's days counting, and the
                     person is owed both halves of what that does BEFORE it
                     happens. Those two sentences are the add-on's own and live in
                     the drawer, so that is where the control lives too — a
@@ -123,7 +123,7 @@ export default function AddOns() {
                   </div>
 
                   {/*
-                    ON THE CARD, not once at the foot of the page (24 AC6). A
+                    ON THE CARD, not once at the foot of the page. A
                     single line under a whole list disclaims a relationship on
                     behalf of entries that have nothing to disclaim, says nothing
                     a reader can attach to the entries that do, and — the part

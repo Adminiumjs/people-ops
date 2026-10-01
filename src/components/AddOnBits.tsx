@@ -23,7 +23,7 @@ import { useStore } from "../state/store.ts";
 /**
  * Three letters on a neutral tile, drawn the same way for every add-on.
  *
- * A TILE AND NOT A LOGO (24 D12). No add-on ships a mark here and none may: a
+ * A TILE AND NOT A LOGO. No add-on ships a mark here and none may: a
  * redrawn logo is a redrawn logo whether it is a `<path>` or a `.png`, and a
  * shelf of twenty of them reads as twenty companies rather than as one system.
  * The letters come off `addOn.monogram`, which is the add-on's own choice.
@@ -55,14 +55,14 @@ export function AddOnTile({ letters, size = 44 }: { letters: string; size?: numb
 /* ------------------------------------------------------ who else is involved */
 
 /**
- * THE LINE EVERY SURFACE THAT NAMES AN ADD-ON ENDS ON (24 AC6).
+ * THE LINE EVERY SURFACE THAT NAMES AN ADD-ON ENDS ON.
  *
  * ── TWO SENTENCES, AND WHOSE EACH ONE IS ────────────────────────────────────
  *
  * `namesCompany: true`  → THIS APP'S line, out of this app's own bundle. It
  *                         names no add-on and no company, so holding it here
  *                         does not make the app know anything about which
- *                         add-ons exist (24 AC5).
+ *                         add-ons exist.
  * `namesCompany: false` → THE ADD-ON'S OWN WORDS, out of its own eight-locale
  *                         bundle, through `noCompanyKeys`. This app has no
  *                         sentence of its own claiming an add-on connects to
@@ -125,7 +125,7 @@ export function Affiliation({ addOn, style }: { addOn: AddOn; style?: CSSPropert
  *
  * It prints this app's own four words and not the add-on's name, not its
  * monogram and not its key. Printing the name would put an add-on's identity on
- * three ordinary screens, and 24 AC6 would then require the not-affiliated line
+ * three ordinary screens, and the affiliation rule would then require its line
  * on all three — a paragraph of small print under a calendar cell, which is
  * worse for the reader than the chip is good. The name is one press away, on
  * the add-ons screen, which is where somebody who wants to know goes.
@@ -142,7 +142,7 @@ export function FromAddOn({ title }: { title?: string }) {
 /* -------------------------------------------------------- seeded, and said so */
 
 /**
- * The caption over an add-on's seeded activity list (24 D11).
+ * The caption over an add-on's seeded activity list.
  *
  * The lines under it look exactly like a real integration's audit trail —
  * timestamps, an action, a relative date — and a reviewer could screenshot them

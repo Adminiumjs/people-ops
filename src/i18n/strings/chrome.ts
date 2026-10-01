@@ -9,7 +9,7 @@
  * single form; ar zero|one|two|few|many|other).
  *
  * VOCABULARY: no "payroll", "salary", "pay" or "compensation" appears in this
- * app in any locale — that is a product boundary, not an oversight. The 17 §2
+ * app in any locale — that is a product boundary, not an oversight. The release
  * sweep words ("pricing", "plan", "tier", "billing", "upgrade") are absent
  * too: say leave policy, growth path, benefits.
  */

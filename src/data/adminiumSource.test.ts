@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 /**
- * Connected mode (28-public-surface.md §5.2, 28-T28 wave 4).
+ * Connected mode.
  *
  * Drives the SHIPPED client against canned wire responses, so `assertRefs`, the
  * config fetch and URL building are under test — not a stub of them.
@@ -144,7 +144,7 @@ describe("identity is reconstructed, because every key is a serial", () => {
   });
 
   it("drops a leave type nobody can resolve, and every request using it", async () => {
-    // THE WS-I DEFECT THIS PINS. `LeaveTypeKey` is a compile-time union and
+    // THE DEFECT THIS PINS. `LeaveTypeKey` is a compile-time union and
     // nothing in the schema carries it, so a type is recognised by its display
     // name. Rename it in the dashboard and its rows stop resolving — dropping
     // them is honest; guessing would put an unstyled chip on the calendar and
@@ -219,7 +219,7 @@ describe("the clock and the seam", () => {
 
   it("refuses a swap that arrives after the seam has been read", () => {
     // THE SILENT FAILURE THIS PINS, and the one this repo was most exposed to:
-    // §5.3 recorded its seam as ORPHANED — seven modules read `demo.ts`
+    // its seam was ORPHANED — seven modules read `demo.ts`
     // directly, so a swap changed nothing anybody could see. `live.ts` is now
     // the single reader, and it reads at module scope.
     source.people();

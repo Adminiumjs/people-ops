@@ -6,7 +6,7 @@
  * the onboarding checklist.
  *
  * VOCABULARY: no payroll, salary or compensation language anywhere, in any
- * locale. The 17 §2 sweep words are absent too.
+ * locale. The release sweep words are absent too.
  */
 import type { LocaleTag } from "../locales.ts";
 

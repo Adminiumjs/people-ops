@@ -47,7 +47,7 @@ import {
 } from "../testing/kit/index.ts";
 
 /**
- * Claims about a delivery this app has already answered for (34 D19).
+ * Claims about a delivery this app has already answered for.
  *
  * Filled in below, per key, with the argument being made — see
  * `testing/kit/delivery-claims.ts` for the three that are legitimate.
@@ -110,7 +110,7 @@ lexiconGuard(hostKit, { bundleFor: (locale) => MESSAGES[locale as never] ?? {} }
 /** No file of this app's own names a company, outside the registration lines. */
 brandGuard(hostKit);
 
-/** Every surface that prints an add-on's identity carries the line (24 AC6). */
+/** Whatever prints an add-on's identity carries the not-affiliated line. */
 labelPairingSourceGuard(hostKit);
 
 /** No mount site casts past the payload contract. */
@@ -127,7 +127,7 @@ stylesGuard(hostKit);
 
 /** The tier this app declared, and the cost of the one it did not take. */
 /*
- * 34 D19. This app labels no simulation — it has no demo-marker convention at
+ * This app labels no simulation — it has no demo-marker convention at
  * all — so every claim it makes has to be answered in `claimsDeclared`, by
  * name, with the argument being made.
  */

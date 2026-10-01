@@ -84,7 +84,7 @@ export const addOns = {
       "These lines are seeded for the demo. A real deployment reads them from the audit log.",
 
     /*
-     * ── disconnecting (24 D16) ───────────────────────────────────────────
+     * ── disconnecting ────────────────────────────────────────────────────
      *
      * THREE SENTENCES, AND THIS APP OWNS EXACTLY ONE OF THEM.
      *
@@ -98,7 +98,7 @@ export const addOns = {
      * be read, on a leave calendar, as "stays on the calendar". It does not:
      * this app stops counting an add-on's days the moment it is switched off,
      * because an app still doing arithmetic on data from something that is off
-     * is not the app that shipped before the seam (24 D6), and the one screen
+     * is not the app that shipped before the seam, and the one screen
      * that could show or remove those days has just been removed. Both facts
      * are true and a person is owed both.
      *

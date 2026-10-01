@@ -168,9 +168,10 @@ const DAY_PROVIDERS: readonly {
  *
  * With nothing enabled, with nothing registered, or with an add-on that has
  * imported nothing, this returns `[]` and `mergeHolidays` below hands back the
- * app's own array UNCHANGED — by identity, not by value. That is 24 D6 written
- * as a return value: with the add-on off, this app is not merely equivalent to
- * the one that shipped before the seam, it is running the same array object.
+ * app's own array UNCHANGED — by identity, not by value. That is "nothing
+ * changed" written as a return value: with the add-on off, this app is not
+ * merely equivalent to the one that shipped before the seam, it is running the
+ * same array object.
  *
  * `epochDayOf` returning `null` for a date that is not a real calendar day is
  * the one drop, and it is the add-on's own converter rather than one written
@@ -214,7 +215,7 @@ export function addOnHolidays(
  *
  * ── IDENTITY, NOT EQUALITY, WHEN NOTHING WAS ADDED ──────────────────────────
  *
- * The early return is the D6 guarantee in one line: no add-on days means the
+ * The early return is that guarantee in one line: no add-on days means the
  * caller gets back the very array it passed in, so every downstream memo,
  * comparison and render behaves precisely as it did before this file existed.
  * A `[...base]` here would be equal and not identical, and "equal" is a claim

@@ -234,7 +234,7 @@ export default function AddOnDrawer() {
           <footer className="fp-drawer__foot">
             {/*
               ═════════════════════════════════════════════════════════════════
-              24 D16 — DISCONNECTING KEEPS THE DATA, AND SAYS SO FIRST
+              DISCONNECTING KEEPS THE DATA, AND SAYS SO FIRST
               ═════════════════════════════════════════════════════════════════
 
               Both sentences are the ADD-ON'S OWN, out of its own eight-locale
@@ -267,7 +267,7 @@ export default function AddOnDrawer() {
                   That is a narrower claim than the add-on's own two lines and it
                   is the only one available; drawing an empty confirmation would
                   leave the reader to guess, and guessing about whether a button
-                  destroys data is the thing D16 exists to stop.
+                  destroys data is the thing the disconnect rule exists to stop.
                  */}
                 <p className="fp-addon__goes">
                   {addOn.disconnect === undefined

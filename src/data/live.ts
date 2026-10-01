@@ -3,7 +3,7 @@
  * The data every screen reads, taken from the seam exactly once.
  *
  * ── WHY THIS FILE EXISTS ───────────────────────────────────────────────────
- * §5.3 recorded this repo's seam as ORPHANED: `source.ts` was written, and
+ * This repo's seam was ORPHANED: `source.ts` was written, and
  * nothing imported it. Seven modules — four screens, two components and
  * `lib/leave.ts` — reached past it into `data/demo.ts`, so swapping the source
  * would have changed nothing anybody could see. That is the failure mode the

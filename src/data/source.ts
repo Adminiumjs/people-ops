@@ -12,7 +12,7 @@
  * either build-time env var is absent — which is the case for every
  * marketplace demo, and is why that fallback is structural rather than a catch.
  *
- * WHAT WAS WRONG HERE BEFORE (§5.3 called this seam "orphaned"): this file
+ * WHAT WAS WRONG HERE BEFORE (the seam was "orphaned"): this file
  * existed and NOTHING imported it. Seven modules read `demo.ts` directly, so
  * swapping the source would have changed nothing on any screen. `live.ts` is
  * now the one place that reads it, and everything else reads `live.ts`.
