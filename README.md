@@ -1,5 +1,8 @@
 # People Ops
 
+> **This app will be reworked in Q4 2026.** Until then it is kept as it is and may not show what
+> the newest Adminium can do.
+
 A complete, production-shaped people desk — built with Vite + React +
 TypeScript, no CSS framework, no backend required. It's an example app that
 ships with [Adminium](https://adminium.dev): check a leave balance, request
